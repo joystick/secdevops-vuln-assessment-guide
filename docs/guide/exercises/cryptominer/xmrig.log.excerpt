@@ -11,7 +11,7 @@
  * COMMANDS     hashrate, pause, resume, results, connection
  * OPENCL       disabled
  * CUDA         disabled
-[2023-08-23 14:35:43.272]  config   configuration saved to: "/home/svc-deploy/moneroocean/config_background.json"
+[2023-08-23 14:35:43.272]  config   configuration saved to: "/home/restudio/moneroocean/config_background.json"
 [2023-08-23 14:35:43.272]  benchmk   STARTING ALGO PERFORMANCE CALIBRATION (with 20 seconds round)
 [2023-08-23 14:35:43.272]  benchmk   Algo ghostrider Preparation
 [2023-08-23 14:35:43.285]  msr      msr kernel module is not available
@@ -29,7 +29,7 @@
 [2023-08-23 14:40:03.015]  benchmk   Algo rx/arq hashrate: 4531.299316
 [2023-08-23 14:40:23.355]  benchmk   Algo panthera hashrate: 2101.766190
 [2023-08-23 14:40:23.355]  benchmk   ALGO PERFORMANCE CALIBRATION COMPLETE
-[2023-08-23 14:40:23.356]  config   configuration saved to: "/home/svc-deploy/moneroocean/config_background.json"
+[2023-08-23 14:40:23.356]  config   configuration saved to: "/home/restudio/moneroocean/config_background.json"
 [2023-08-23 14:40:23.367]  net      use pool gulf.moneroocean.stream:10032  199.247.0.216
 [2023-08-23 14:40:23.367]  net      new job from gulf.moneroocean.stream:10032 diff 27354 algo rx/0 height 61487
 [2023-08-23 14:40:43.680]  cpu      accepted (1/0) diff 27354 (66 ms)

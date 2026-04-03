@@ -1,6 +1,6 @@
 # Chapter 9: Exercise -- Cryptominer Detection (Real Incident)
 
-This exercise is different from the others. The artifacts are **sanitized from an actual incident** where a contractor installed a Monero cryptominer on a production server. The wallet address and username have been replaced, but the configuration structure, launcher script, and log output are authentic.
+This exercise is different from the others. The artifacts are **preserved from an actual incident** where a contractor installed a Monero cryptominer on a production server. The wallet address, worker name, and file paths are preserved as-is — they are evidence that can be used to trace who profited from the attack.
 
 This is the most common server compromise scenario DevOps engineers face: not a sophisticated exploit, but a trusted insider abusing legitimate access.
 
@@ -71,13 +71,13 @@ In a real audit, you would find this by checking running processes and home dire
 ```bash
 # What a 'ps' output would have shown on the compromised server:
 # PID  USER        %CPU  COMMAND
-# 1847 svc-deploy  98.2  /home/svc-deploy/moneroocean/xmrig
-# 1848 svc-deploy  98.1  /home/svc-deploy/moneroocean/xmrig
-# 1849 svc-deploy  98.0  /home/svc-deploy/moneroocean/xmrig
-# 1850 svc-deploy  97.9  /home/svc-deploy/moneroocean/xmrig
+# 1847 restudio  98.2  /home/restudio/moneroocean/xmrig
+# 1848 restudio  98.1  /home/restudio/moneroocean/xmrig
+# 1849 restudio  98.0  /home/restudio/moneroocean/xmrig
+# 1850 restudio  97.9  /home/restudio/moneroocean/xmrig
 
 # What a directory listing would show:
-# /home/svc-deploy/moneroocean/
+# /home/restudio/moneroocean/
 # ├── config.json
 # ├── config_background.json
 # ├── miner.sh
@@ -91,7 +91,7 @@ In a real audit, you would find this by checking running processes and home dire
 
 ```
 During a server audit, I found this shell script at
-/home/svc-deploy/moneroocean/miner.sh along with a binary called
+/home/restudio/moneroocean/miner.sh along with a binary called
 'xmrig' and JSON config files. Give me a quick assessment:
 
 1. What does this script do?
@@ -157,9 +157,9 @@ Extract all operational details:
 > **Configuration analysis:**
 >
 > 1. **Pool**: `gulf.moneroocean.stream:10032` (MoneroOcean pool, medium difficulty)
-> 2. **Wallet**: `44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A`
+> 2. **Wallet**: `41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q`
 >    - This is a Monero (XMR) wallet address -- whoever controls this wallet receives the mining proceeds
->    - Worker name: `exercise-worker`
+>    - Worker name: `multivendor`
 > 3. **CPU**: `max-threads-hint: 100` (use 100% of available threads), `huge-pages: true` (optimize memory), `memory-pool: true`
 > 4. **Background**: `false` in this config (foreground mode), but a separate `config_background.json` exists with `background: true`
 > 5. **Visibility reduction**:
@@ -173,11 +173,11 @@ Extract all operational details:
 > | Domain | gulf.moneroocean.stream |
 > | Port | 10032 |
 > | IP | 199.247.0.216 (pool IP from log) |
-> | File | /home/svc-deploy/moneroocean/xmrig |
-> | File | /home/svc-deploy/moneroocean/config.json |
-> | File | /home/svc-deploy/moneroocean/config_background.json |
-> | File | /home/svc-deploy/moneroocean/xmrig.log |
-> | File | /home/svc-deploy/moneroocean/miner.sh |
+> | File | /home/restudio/moneroocean/xmrig |
+> | File | /home/restudio/moneroocean/config.json |
+> | File | /home/restudio/moneroocean/config_background.json |
+> | File | /home/restudio/moneroocean/xmrig.log |
+> | File | /home/restudio/moneroocean/miner.sh |
 > | Process | xmrig |
 > | Wallet | 44AFFq5k... (Monero address) |
 
@@ -437,7 +437,7 @@ echo "=== Scan Complete ==="
 
 ```
 A cryptominer (XMRig/MoneroOcean) was found on a production Linux server
-at /home/svc-deploy/moneroocean/. It was installed by a contractor with
+at /home/restudio/moneroocean/. It was installed by a contractor with
 SSH access. The miner connects to gulf.moneroocean.stream:10032.
 
 Provide step-by-step remediation covering:
@@ -456,7 +456,7 @@ Provide step-by-step remediation covering:
 # Kill the miner process
 sudo killall xmrig 2>/dev/null
 # Or more precisely:
-sudo kill $(pgrep -f '/home/svc-deploy/moneroocean/xmrig')
+sudo kill $(pgrep -f '/home/restudio/moneroocean/xmrig')
 
 # Block the mining pool at the host firewall
 sudo iptables -A OUTPUT -d gulf.moneroocean.stream -j DROP
@@ -475,15 +475,15 @@ ss -tnp | grep 10032  # should return nothing
 sudo mkdir -p /var/evidence/$(date +%Y%m%d)-cryptominer
 
 # Copy all miner artifacts
-sudo cp -r /home/svc-deploy/moneroocean/ /var/evidence/$(date +%Y%m%d)-cryptominer/
+sudo cp -r /home/restudio/moneroocean/ /var/evidence/$(date +%Y%m%d)-cryptominer/
 
 # Capture process listing and network state
 ps auxf > /var/evidence/$(date +%Y%m%d)-cryptominer/ps-output.txt
 ss -tnp > /var/evidence/$(date +%Y%m%d)-cryptominer/network-state.txt
-last -i svc-deploy > /var/evidence/$(date +%Y%m%d)-cryptominer/login-history.txt
+last -i restudio > /var/evidence/$(date +%Y%m%d)-cryptominer/login-history.txt
 
 # Get file hashes
-sha256sum /home/svc-deploy/moneroocean/* > \
+sha256sum /home/restudio/moneroocean/* > \
     /var/evidence/$(date +%Y%m%d)-cryptominer/file-hashes.txt
 
 # Capture SSH auth logs
@@ -494,17 +494,17 @@ sudo cp /var/log/auth.log /var/evidence/$(date +%Y%m%d)-cryptominer/
 
 ```bash
 # Remove the miner directory
-sudo rm -rf /home/svc-deploy/moneroocean/
+sudo rm -rf /home/restudio/moneroocean/
 
 # Check for cron entries (may not exist but verify)
-sudo crontab -u svc-deploy -l 2>/dev/null
+sudo crontab -u restudio -l 2>/dev/null
 crontab -l 2>/dev/null
 
 # Check for systemd user services
-ls /home/svc-deploy/.config/systemd/user/ 2>/dev/null
+ls /home/restudio/.config/systemd/user/ 2>/dev/null
 
 # Check bash history for how it was installed
-cat /home/svc-deploy/.bash_history | grep -iE 'wget|curl|git|monero|xmrig|miner'
+cat /home/restudio/.bash_history | grep -iE 'wget|curl|git|monero|xmrig|miner'
 
 # Check /tmp and /var/tmp for other copies
 find /tmp /var/tmp -name "xmrig*" -o -name "*monero*" 2>/dev/null
@@ -514,11 +514,11 @@ find /tmp /var/tmp -name "xmrig*" -o -name "*monero*" 2>/dev/null
 
 ```bash
 # Revoke the contractor's SSH access immediately
-sudo usermod -L svc-deploy           # Lock the account
-sudo passwd -l svc-deploy            # Lock the password
+sudo usermod -L restudio           # Lock the account
+sudo passwd -l restudio            # Lock the password
 
 # Remove SSH keys
-sudo rm -f /home/svc-deploy/.ssh/authorized_keys
+sudo rm -f /home/restudio/.ssh/authorized_keys
 
 # Review who else has access
 cat /etc/passwd | grep -v nologin | grep -v /bin/false
@@ -555,6 +555,53 @@ done
 
 ---
 
+## Bonus: OSINT — Tracing the Beneficiary
+
+Because the artifacts are unsanitized, you can practice **attribution research** using the wallet address and worker name. This is a skill that turns a technical finding into an actionable investigation.
+
+### Step 1: Wallet address lookup
+
+The Monero wallet address from the config:
+
+```
+41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q
+```
+
+**Prompt** (to `vuln-assessor:1.0`):
+
+```
+I found a cryptominer with this Monero wallet address:
+41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q
+
+And this worker name: "multivendor"
+
+What OSINT steps can I take to trace who controls this wallet?
+What does the worker name suggest about the scope of the operation?
+```
+
+Key investigation angles:
+
+- **Wallet address search**: Search the address on blockchain explorers, mining pool stats pages, and threat intel databases. The same wallet may appear in other incident reports.
+- **Worker name "multivendor"**: This suggests the miner may be deployed across multiple servers or organizations ("multi-vendor"). Search for this worker name in MoneroOcean pool statistics — it may reveal how many machines are mining to this wallet.
+- **MoneroOcean pool stats**: MoneroOcean provides public worker statistics. The pool endpoint `gulf.moneroocean.stream` can be queried for information about this wallet's total hashrate and connected workers.
+- **Cross-reference with contractor identity**: If you know who the contractor is, the wallet address can be used as evidence linking them to the unauthorized mining activity.
+
+### Step 2: Search for the wallet in other incidents
+
+**Prompt**:
+
+```
+If I find this same Monero wallet address in other incident reports or
+on other compromised servers, what does that tell me about the attacker?
+
+Wallet: 41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q
+Worker: multivendor
+```
+
+The model should explain that reuse of the same wallet across multiple compromises indicates a **systematic operation** rather than a one-off opportunistic act, strengthening the case for deliberate insider abuse.
+
+---
+
 ## Lessons from this incident
 
 This exercise teaches something the other exercises don't: **not every threat is sophisticated**. The key takeaways:
@@ -583,7 +630,7 @@ This exercise teaches something the other exercises don't: **not every threat is
 **Classification**: Insider threat — unauthorized cryptocurrency mining
 
 ## Triage
-Found XMRig binary and configuration in /home/svc-deploy/moneroocean/.
+Found XMRig binary and configuration in /home/restudio/moneroocean/.
 Launcher script explicitly identifies itself as "Monero miner."
 Verdict: UNAUTHORIZED CRYPTOMINER.
 
@@ -604,9 +651,9 @@ Verdict: UNAUTHORIZED CRYPTOMINER.
 | IP | 199.247.0.216 |
 | Port | 10032 |
 | Process | xmrig |
-| Path | /home/svc-deploy/moneroocean/ |
+| Path | /home/restudio/moneroocean/ |
 | Binary | XMRig/6.20.0-mo1 (SHA256: [compute from evidence]) |
-| Wallet | 44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A |
+| Wallet | 41qbTDmsb6s4RiWgju3kSSNStWYY7mfyoepx4sFmw5um68MxJtnzQQw31bN1Y9hjp4jYwg2WTpeUfaGT375rNvyX4VGNw8Q |
 
 ## Detection
 - YARA: Cryptominer_XMRig_Config (matches config file patterns)
