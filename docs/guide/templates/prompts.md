@@ -322,6 +322,85 @@ Provide remediation steps for:
 3. Organizational level (communication, monitoring, prevention)
 ```
 
+### R5. Cryptominer incident remediation (`vuln-assessor:1.0`)
+
+```
+A cryptominer (XMRig/MoneroOcean) was found on a production Linux server
+at <path>. It was installed by a contractor with SSH access. The miner
+connects to <pool>:<port>.
+
+Provide step-by-step remediation covering:
+1. Immediate containment (stop the miner, block the pool)
+2. Evidence preservation (before deleting anything)
+3. Eradication (remove all miner artifacts)
+4. Access review (the contractor had legitimate access)
+5. Prevention (how to prevent recurrence)
+```
+
+---
+
+## Cryptominer-Specific Prompts
+
+### CM1. Miner config analysis (`vuln-assessor:1.0`)
+
+```
+Analyze this XMRig cryptocurrency miner configuration file.
+Extract all operational details:
+
+1. What mining pool is it connecting to?
+2. What is the wallet address (who gets paid)?
+3. What CPU resources is it configured to use?
+4. Is it configured to run in the background?
+5. Is there any attempt to hide or reduce visibility?
+6. List all IoCs (network, file, process) from this config.
+
+---
+<paste config.json contents here>
+```
+
+### CM2. Miner config comparison (`vuln-assessor:1.0`)
+
+```
+Compare these two XMRig configurations. What is different between the
+foreground config and the background config? What does the background
+config tell us about the attacker's operational approach?
+
+--- Foreground config ---
+<paste config.json>
+
+--- Background config ---
+<paste config_background.json>
+```
+
+### CM3. Miner log analysis (`vuln-assessor:1.0`)
+
+```
+Analyze this XMRig miner log excerpt. Extract:
+
+1. When did the miner start?
+2. What hardware is it running on?
+3. What algorithms were benchmarked and at what hashrates?
+4. When did it connect to the pool and start mining?
+5. What was the sustained hashrate?
+6. How many shares were accepted?
+
+---
+<paste xmrig.log excerpt here>
+```
+
+### CM4. Cryptominer YARA rule (`vuln-assessor:1.0`)
+
+```
+Write a YARA rule that detects XMRig/MoneroOcean configuration files on
+a filesystem. The rule should match on:
+
+1. Mining pool domain patterns (*.moneroocean.stream, etc.)
+2. XMRig-specific config keys (algo-perf, randomx, donate-level)
+3. Monero wallet address pattern (95-char string starting with 4)
+
+This should detect config files, not the binary itself.
+```
+
 ---
 
 ## Model quick reference
@@ -331,6 +410,6 @@ Provide remediation steps for:
 | `phi3:mini` | Fast code/JS triage | T1, T4 |
 | `gemma3:4b` | Quick pattern-matching | Ad-hoc triage |
 | `llama3.2:3b` | General reasoning | T2, T3 |
-| `vuln-assessor:1.0` | Deep security analysis | A3, A4, A5, D1-D4, D6, R1-R3 |
+| `vuln-assessor:1.0` | Deep security analysis | A3, A4, A5, CM1-CM4, D1-D4, D6, R1-R3, R5 |
 | `supplychain:1.0` | npm/dependency focus | A1, A2, R2 |
 | `ios-js-re:1.0` | JavaScript/iOS exploits | A6, A7, A8, D5, R4 |

@@ -4,7 +4,7 @@ A practical, hands-on guide for DevOps engineers to build security vulnerability
 
 ## How to use this guide
 
-Work through the chapters in order. Chapters 1-2 establish the methodology. Chapters 3-4 set up your lab. Chapters 5-7 are progressive exercises that apply the methodology to increasingly complex attack surfaces. Chapter 8 shows how to integrate everything into your production workflows.
+Work through the chapters in order. Chapters 1-2 establish the methodology. Chapters 3-4 set up your lab. Chapters 5-7 are progressive exercises that apply the methodology to increasingly complex attack surfaces. Chapter 8 shows how to integrate everything into your production workflows. Chapter 9 is a bonus exercise based on a real cryptominer incident.
 
 Every exercise follows the same **TADR loop** (Triage, Analyze, Detect, Remediate) so the process becomes muscle memory regardless of the threat type.
 
@@ -20,6 +20,7 @@ Every exercise follows the same **TADR loop** (Triage, Analyze, Detect, Remediat
 | 6 | [Exercise: Binary Malware RE](06-exercise-binary-malware.md) | TADR walkthrough reverse-engineering a suspicious binary from email or MikroTik (medium) |
 | 7 | [Exercise: iOS JavaScript Exploits](07-exercise-ios-js-exploits.md) | TADR walkthrough analyzing obfuscated Safari/JSC exploit payloads (hardest) |
 | 8 | [Operationalizing in CI/CD](08-operationalizing-cicd.md) | Integrating TADR into your DevOps pipeline: pre-install scanning, quarantine, detection deployment |
+| 9 | [Exercise: Cryptominer Detection](09-exercise-cryptominer.md) | TADR walkthrough based on a real MoneroOcean/XMRig incident -- insider threat on a production server |
 
 ## Appendices
 

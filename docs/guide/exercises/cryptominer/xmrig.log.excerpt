@@ -1,0 +1,45 @@
+ * ABOUT        XMRig/6.20.0-mo1 gcc/9.3.1
+ * LIBS         libuv/1.44.2 OpenSSL/1.1.1s hwloc/2.9.0
+ * HUGE PAGES   supported
+ * 1GB PAGES    disabled
+ * CPU          Intel Xeon Processor (Skylake, IBRS) (1) 64-bit AES VM
+                L2:16.0 MB L3:16.0 MB 4C/4T NUMA:1
+ * MEMORY       10.6/15.3 GB (69%)
+ * DONATE       0%
+ * ASSEMBLY     auto:intel
+ * POOL #1      gulf.moneroocean.stream:10032 algo auto
+ * COMMANDS     hashrate, pause, resume, results, connection
+ * OPENCL       disabled
+ * CUDA         disabled
+[2023-08-23 14:35:43.272]  config   configuration saved to: "/home/svc-deploy/moneroocean/config_background.json"
+[2023-08-23 14:35:43.272]  benchmk   STARTING ALGO PERFORMANCE CALIBRATION (with 20 seconds round)
+[2023-08-23 14:35:43.272]  benchmk   Algo ghostrider Preparation
+[2023-08-23 14:35:43.285]  msr      msr kernel module is not available
+[2023-08-23 14:35:43.285]  msr      FAILED TO APPLY MSR MOD, HASHRATE WILL BE LOW
+[2023-08-23 14:36:08.748]  benchmk   Algo ghostrider hashrate: 227.513228
+[2023-08-23 14:36:29.858]  benchmk   Algo cn/r hashrate: 126.465662
+[2023-08-23 14:36:49.948]  benchmk   Algo cn-lite/1 hashrate: 466.547819
+[2023-08-23 14:37:10.276]  benchmk   Algo cn-heavy/xhv hashrate: 66.164154
+[2023-08-23 14:37:30.339]  benchmk   Algo cn-pico hashrate: 3356.797647
+[2023-08-23 14:37:51.280]  benchmk   Algo cn/ccx hashrate: 182.924132
+[2023-08-23 14:38:11.972]  benchmk   Algo cn/gpu hashrate: 21.303258
+[2023-08-23 14:38:32.157]  benchmk   Algo argon2/chukwav2 hashrate: 3250.710153
+[2023-08-23 14:39:03.796]  benchmk   Algo rx/0 hashrate: 1060.946187
+[2023-08-23 14:39:33.419]  benchmk   Algo rx/graft hashrate: 1060.065106
+[2023-08-23 14:40:03.015]  benchmk   Algo rx/arq hashrate: 4531.299316
+[2023-08-23 14:40:23.355]  benchmk   Algo panthera hashrate: 2101.766190
+[2023-08-23 14:40:23.355]  benchmk   ALGO PERFORMANCE CALIBRATION COMPLETE
+[2023-08-23 14:40:23.356]  config   configuration saved to: "/home/svc-deploy/moneroocean/config_background.json"
+[2023-08-23 14:40:23.367]  net      use pool gulf.moneroocean.stream:10032  199.247.0.216
+[2023-08-23 14:40:23.367]  net      new job from gulf.moneroocean.stream:10032 diff 27354 algo rx/0 height 61487
+[2023-08-23 14:40:43.680]  cpu      accepted (1/0) diff 27354 (66 ms)
+[2023-08-23 14:40:46.008]  miner    speed 10s/60s/15m 1093.9 n/a n/a H/s max 1114.5 H/s
+[2023-08-23 14:41:29.127]  net      new job from gulf.moneroocean.stream:10032 diff 12479 algo rx/0 height 61487
+[2023-08-23 14:41:46.463]  cpu      accepted (2/0) diff 12479 (67 ms)
+[2023-08-23 14:42:05.144]  cpu      accepted (3/0) diff 12479 (65 ms)
+[2023-08-23 14:42:46.904]  cpu      accepted (4/0) diff 12479 (65 ms)
+[2023-08-23 14:43:06.237]  cpu      accepted (6/0) diff 12479 (65 ms)
+[2023-08-23 14:43:42.676]  net      new job from gulf.moneroocean.stream:10032 diff 20541 algo rx/0 height 61488
+[2023-08-23 14:43:46.984]  miner    speed 10s/60s/15m 1176.3 1081.6 n/a H/s max 1185.0 H/s
+[2023-08-23 14:44:01.788]  cpu      accepted (10/0) diff 20541 (40 ms)
+[2023-08-23 14:45:47.574]  miner    speed 10s/60s/15m 1143.8 1072.9 n/a H/s max 1206.3 H/s
